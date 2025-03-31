@@ -1,0 +1,141 @@
+"use client"
+
+import { useEffect, useState } from "react"
+import { getParticipant } from "../actions/getInfo"
+import Image from "next/image"
+import { Trophy, Medal, Award, ThumbsUp } from "lucide-react"
+
+interface Data {
+    upvote: number;
+    user: {
+        name: string | null;
+        image: string | null;
+        branch: {
+            name: string;
+        } | null;
+    };
+}
+
+export function LeaderBoard({ contestId }: { contestId: string }) {
+    const [error, setError] = useState("")
+    const [data, setData] = useState<Data[]>()
+    const [isLoading, setIsLoading] = useState(false)
+
+    useEffect(() => {
+        const main = async () => {
+            setIsLoading(true)
+            const response = await getParticipant(contestId)
+
+            if (!response) {
+                setError("Something went wrong")
+            }
+
+            // Sort participants by upvotes (highest first)
+            const sortedData = response?.sort((a, b) => b.upvote - a.upvote)
+            setData(sortedData)
+            setIsLoading(false)
+        }
+        main()
+    }, [contestId])
+
+    // Function to handle votes
+    const handleVote = async (userName: string | null) => {
+
+    }
+
+    // Function to render trophy or medal based on rank
+    const getRankIcon = (index: number) => {
+        switch (index) {
+            case 0:
+                return <Trophy className="text-yellow-400 w-6 h-6" />
+            case 1:
+                return <Medal className="text-gray-400 w-6 h-6" />
+            case 2:
+                return <Medal className="text-amber-700 w-6 h-6" />
+            default:
+                return <Award className="text-black w-5 h-5" />
+        }
+    }
+
+    return (
+        <div className="bg-gray-50 rounded-lg shadow-md p-6 max-w-3xl mx-auto">
+            <h2 className="text-2xl font-bold text-center mb-2">Contest Leaderboard</h2>
+            <p className="text-center text-gray-600 mb-6">Vote for the hottest guy from the institute</p>
+
+            {isLoading ? (
+                <div className="flex justify-center items-center h-40">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-yellow-500"></div>
+                </div>
+            ) : error ? (
+                <div className="bg-red-100 border border-red-200 text-red-700 px-4 py-3 rounded">
+                    {error}
+                </div>
+            ) : data && data.length > 0 ? (
+                <div className="space-y-4">
+                    {data.map((participant, index) => (
+                        <div
+                            key={participant.user.name}
+                            className={`flex items-center justify-between p-4 rounded-lg transition-all ${index === 0
+                                    ? "bg-yellow-100 border-2 border-yellow-400"
+                                    : "bg-white border border-gray-200 hover:border-yellow-400"
+                                }`}
+                        >
+                            <div className="flex items-center space-x-4">
+                                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100">
+                                    {getRankIcon(index)}
+                                </div>
+
+                                <div className="flex items-center">
+                                    {participant.user.image ? (
+                                        <div className="relative mr-3">
+                                            <Image
+                                                src={participant.user.image}
+                                                alt={participant.user.name || "User"}
+                                                width={40}
+                                                height={40}
+                                                className="rounded-full border-2 border-gray-200"
+                                            />
+                                        </div>
+                                    ) : (
+                                        <div className="w-10 h-10 rounded-full bg-gray-300 mr-3 flex items-center justify-center">
+                                            <span className="text-gray-600 font-medium">
+                                                {participant.user.name?.charAt(0) || "?"}
+                                            </span>
+                                        </div>
+                                    )}
+
+                                    <div>
+                                        <p className="font-semibold text-gray-800">{participant.user.name || "Anonymous"}</p>
+                                        <p className="text-sm text-gray-500">{participant.user.branch?.name || "No Branch"}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center space-x-3">
+                                <div className="bg-black text-yellow-400 px-4 py-2 rounded-full font-semibold">
+                                    {participant.upvote} {participant.upvote === 1 ? "vote" : "votes"}
+                                </div>
+
+                                <button
+                                    onClick={() => handleVote(participant.user.name)}
+                                    className={`flex cursor-pointer items-center gap-2 px-4 py-2 rounded-full font-semibold transition-colors ${"bg-yellow-500 hover:bg-yellow-600 text-black"
+                                        }`}
+                                >
+                                    <ThumbsUp className="w-4 h-4" />
+                                    Vote
+                                </button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                <div className="text-center py-10">
+                    <p className="text-gray-500 mb-2">No participants found</p>
+                    <button className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 px-4 rounded-md transition-colors">
+                        Refresh
+                    </button>
+                </div>
+            )}
+        </div>
+    )
+}
