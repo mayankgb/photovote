@@ -107,7 +107,7 @@ export const authOptions = {
                     // console.log("this is the institueId", session)
                 }
             }
-            console.log(trigger)
+            console.log("this is the trigger",trigger)
 
             return token
         },
@@ -132,7 +132,7 @@ export const authOptions = {
 
     cookies: {
         sessionToken: {
-          name: "next-auth.session-token",
+          name: `${process.env.NODE_ENV === "production" ? "__Secure-" : ""}next-auth.session-token`,
           options: {
             httpOnly: true,
             sameSite: "lax",
