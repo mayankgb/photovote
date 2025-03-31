@@ -10,13 +10,13 @@ export async function middleware(req: NextRequest) {
     if (token) {
         if (token.instituteId) {
             if (pathname.startsWith("/details")) {
-                return NextResponse.redirect("http://localhost:3000/home")
+                return NextResponse.redirect("https://molest-frontend2.vercel.app/home")
             }
         }else {
             if (pathname.startsWith("/details")) {
                 return NextResponse.next()
             }
-            return NextResponse.redirect("http://localhost:3000/details")
+            return NextResponse.redirect("https://molest-frontend2.vercel.app/details")
         }
         return NextResponse.next()
     }

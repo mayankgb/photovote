@@ -82,7 +82,7 @@ export function Candidates() {
             }
     
     
-            const response = await axios.post("http://localhost:8001/user/upvote", {
+            const response = await axios.post("https://molest-frontend2.vercel.app/user/upvote", {
                 contestId, 
                 participantId
             } , {
