@@ -33,7 +33,7 @@ export function LiveBoard() {
                 return
             }
 
-            const socket = new WebSocket("ws://localhost:8001")
+            const socket = new WebSocket("wss://molest-backend.onrender.com")
 
             socket.onopen = () => {
                 console.log("connected")

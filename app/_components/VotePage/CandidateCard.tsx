@@ -38,7 +38,7 @@ export function Candidates() {
             setIsLoading(true)
             try {
 
-                const response2 = await axios.post("http://localhost:8001/user/getallparticipant",{
+                const response2 = await axios.post("https://molest-backend.onrender.com/user/getallparticipant",{
                     contestId
                 } , {
                     headers: {
