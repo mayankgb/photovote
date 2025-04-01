@@ -1,13 +1,13 @@
 "use server"
 
-import prisma from "@/client";
+import {prisma} from "@/client";
 
 export async function getAllContest(instituteId : string) {
     try{
         const data = await prisma.contest.findMany({
             where: {
                 instituteId: instituteId,
-                status: "CREATED"
+                status: "STARTED"
             },
             select: {
                 id: true,

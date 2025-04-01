@@ -1,9 +1,8 @@
-import prisma from "@/client";
-import { Account, NextAuthOptions, Session, SessionStrategy, User } from "next-auth";
+import {prisma} from "@/client";
+import { Account, Session, SessionStrategy, User } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import Google from "next-auth/providers/google";
 import jwt from "jsonwebtoken"
-import { NextConfig } from "next";
 
 
 export const authOptions = {

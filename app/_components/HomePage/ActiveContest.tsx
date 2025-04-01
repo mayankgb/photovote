@@ -1,4 +1,4 @@
-import prisma from "@/client";
+import {prisma} from "@/client";
 import Link from "next/link"
 
 export default async function ActiveContest() {

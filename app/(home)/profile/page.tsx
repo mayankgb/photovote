@@ -86,7 +86,6 @@ export default function Profile() {
             }
 
             const signedUrl = await getPresignedUrl(file.type)
-            console.log("this is the problem ",signedUrl)
             if (!signedUrl) {
                 return
             }
@@ -96,9 +95,6 @@ export default function Profile() {
                     "Content-Type": "image/jpeg"
                 }
             })
-
-            console.log(response)
-
 
             const imageUrl =  `https://d12hk4zd0jmtng.cloudfront.net/path/${session.data?.user.name}-${session.data?.user.id}`
 

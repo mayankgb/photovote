@@ -1,5 +1,5 @@
 import { authOptions } from "@/app/lib/auth"
-import prisma from "@/client"
+import {prisma} from "@/client"
 import { getServerSession } from "next-auth"
 
 export default async function ViewAchievements() {

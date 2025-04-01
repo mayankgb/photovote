@@ -1,6 +1,6 @@
 "use server"
 
-import prisma from "@/client"
+import {prisma} from "@/client"
 import { getServerSession } from "next-auth"
 import { authOptions } from "../lib/auth"
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3"
@@ -153,9 +153,6 @@ export async function getPresignedUrl(name: string) {
     if (!session) {
         return
     }
-
-    console.log(process.env.ACCESS_KEY)
-    console.log(process.env.SECRET_ACCESS_KEY)
 
     try {
         const command = new PutObjectCommand({

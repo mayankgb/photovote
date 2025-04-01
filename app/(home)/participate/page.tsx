@@ -87,7 +87,7 @@ export default function Participate() {
                 return    
             }
             if (isLoading) {
-                toast("All ready request in process")
+                toast.error("All ready request in process")
                 return
             }
 
@@ -97,7 +97,7 @@ export default function Participate() {
                 const response = await createApproval(session.data?.user.id, contestId)
                 const newData = await getNonParticipatedContest(session.data.user.instituteId!, session.data.user.id)
 
-                toast("Your approval is in pending state and if eligible admin will approve you soon")
+                toast.success("Your approval is in pending state and if eligible admin will approve you soon")
 
                 if (newData) {
                     setContests(newData)
@@ -158,7 +158,7 @@ export default function Participate() {
                                          flex-1 cursor-pointer  hover:bg-gray-900 font-medium py-2 px-4 rounded-lg transition-colors
                                          `}>
                                         {(contest.category === "MALE" && session.data.user.gender === "male") || (contest.category === "FEMALE" && session.data.user.gender === "female") ? "Participate" : 
-                                        ((contest.category === "MALE" )? "Only Girls" : "Only Boys" )
+                                        ((contest.category === "MALE" )? "Only Boys" : "Only Girls" )
                                         }
                                         </button>
                                     </div>
