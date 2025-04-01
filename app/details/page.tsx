@@ -12,6 +12,8 @@ import { useSession } from "next-auth/react"
 import { toast } from "sonner"
 import { SelectAge } from "../_components/DetailsPage/SelectAge"
 import { useRouter } from "next/navigation"
+import { useState } from "react"
+import { Button } from "@/components/ui/button"
 
 const instrument = Instrument_Serif({
   subsets: ['latin'],
@@ -23,6 +25,7 @@ export default function ProfileForm() {
   const session = useSession()
   const router = useRouter()
   console.log(session)
+  const [isDisable , setIsDisable] = useState(false)
 
   const { name, age, gender, instituteId, branchId, setField } = useUserStore()
 
@@ -30,7 +33,9 @@ export default function ProfileForm() {
 
     const toastId = toast.loading("updating your data")
     try {
+      setIsDisable(true)
       if (!name || !age || !gender || !instituteId || !branchId) {
+        setIsDisable(false)
         return
       }
       const response = await updateUserDetails(instituteId, branchId, name, parseInt(age), gender)
@@ -40,10 +45,14 @@ export default function ProfileForm() {
       toast.success("successfully updated")
 
       router.push("/home")
+      setIsDisable(false)
+      return
     } catch (e) {
       console.log("this is the error",e)
       toast.dismiss(toastId)
       toast.error("something went wrong please try after some time")
+      setIsDisable(false)
+      return
     }
   }
 
@@ -81,13 +90,13 @@ export default function ProfileForm() {
             <SelectBranch />
 
 
-            <button
+            <Button
               onClick={handleSubmit}
-              disabled={(!name || !age || !gender || !instituteId || !branchId)}
+              disabled={(!name || !age || !gender || !instituteId || !branchId) || (isDisable)}
               className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-medium py-2 px-4 rounded-lg mt-6 transition-colors"
             >
               Save Profile
-            </button>
+            </Button>
           </div>
         </div>
 

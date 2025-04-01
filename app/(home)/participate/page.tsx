@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { ImageIcon } from "lucide-react"
+import { ImageIcon, Loader2 } from "lucide-react"
 import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
 import { createApproval, getNonParticipatedContest } from "@/app/actions/contest"
@@ -10,38 +10,40 @@ import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 
 interface Contest {
-
     id: string, 
     name: string, 
     category: $Enums.Category,
     endDate: Date
-
 }
 
 export default function Participate() {
-    const session =  useSession()
+    const session = useSession()
     const [contests, setContests] = useState<Contest[]>([])
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
+    const [isSubmitting, setIsSubmitting] = useState(false)
     const router = useRouter()
 
     useEffect(() => {
-        try{
-
-            const main  = async () => {
-                if (!session || !session.data ||!session.data.user.instituteId) {
+        try {
+            const main = async () => {
+                setIsLoading(true)
+                if (!session || !session.data || !session.data.user.instituteId) {
+                    setIsLoading(false)
                     return
                 }
                 const response = await getNonParticipatedContest(session.data.user.instituteId, session.data.user.id)
                 if (!response || response.length === 0) {
-                    return
+                    setContests([])
+                } else {
+                    setContests(response)
                 }
-                setContests(response)
+                setIsLoading(false)
             }
 
             main()
-            
-        }catch(e) {
+        } catch(e) {
             console.log(e)
+            setIsLoading(false)
             return
         }
     }, [session])
@@ -64,36 +66,30 @@ export default function Participate() {
 
     if (!session.data?.user.image) {
         return (
-            <div className="flex items-center space-y-4 flex-col bg-red-400 h-screen justify-center ">
+            <div className="flex items-center space-y-4 flex-col h-screen justify-center ">
                 <div className="text-4xl ">
                 Please Provide the Profile Photo to participate in the contest
                 </div>
                 <div onClick={() => router.push("/profile") } className="bg-yellow-400 cursor-pointer w-fit px-3 py-2 font-semibold rounded-xl">
                     Go to Profile
                 </div>
-
             </div>
         )
     }
 
-    
-
-    async function handleClick(isValid: boolean , contestId: string) {
-
-        try{
-            console.log("done")
-
+    async function handleClick(isValid: boolean, contestId: string) {
+        try {
             if (!session.data?.user.id) {
                 return    
             }
-            if (isLoading) {
-                toast.error("All ready request in process")
+            if (isSubmitting) {
+                toast.error("Already request in process")
                 return
             }
 
             if (isValid) {
-                toast("loading")
-                setIsLoading(true)
+                toast("Processing your request...")
+                setIsSubmitting(true)
                 const response = await createApproval(session.data?.user.id, contestId)
                 const newData = await getNonParticipatedContest(session.data.user.instituteId!, session.data.user.id)
 
@@ -102,26 +98,28 @@ export default function Participate() {
                 if (newData) {
                     setContests(newData)
                 }
-                setIsLoading(false)
+                setIsSubmitting(false)
             }
             return
-
-
-        }catch(e) {
+        } catch(e) {
             console.log(e)
-            toast("something went wrong")
+            toast.error("Something went wrong")
+            setIsSubmitting(false)
             return
         }
-
     }
-
 
     return (
         <div className="min-h-screen w-full grow bg-gray-50 p-6">
             <div className="max-w-6xl mx-auto">
                 <h1 className="text-2xl font-bold mb-6">Available Contests</h1>
 
-                {contests.length > 0 ? (
+                {isLoading ? (
+                    <div className="flex items-center justify-center py-20">
+                        <Loader2 className="w-12 h-12 text-yellow-400 animate-spin" />
+                        <span className="ml-2 text-gray-600 font-medium">Loading contests...</span>
+                    </div>
+                ) : contests.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {contests.map((contest) => (
                             <div
@@ -146,20 +144,24 @@ export default function Participate() {
                                                 month: "long",
                                                 year: "numeric",
                                             })}
-
                                         </p>
                                     )}
 
                                     <div className="flex gap-2">
                                         <button
-                                         onClick={() => handleClick((contest.category === "MALE" && session.data.user.gender === "male") || (contest.category === "FEMALE" && session.data.user.gender === "female") , contest.id)}
-                                         disabled={!((contest.category === "MALE" && session.data.user.gender === "female") || (contest.category === "FEMALE" && session.data.user.gender === "male"))}
-                                         className={`${(!((contest.category === "MALE" && session.data.user.gender === "male") || (contest.category === "FEMALE" && session.data.user.gender === "female"))) ? "bg-gray-500 text-black" : "bg-black text-yellow-400"}
-                                         flex-1 cursor-pointer  hover:bg-gray-900 font-medium py-2 px-4 rounded-lg transition-colors
-                                         `}>
-                                        {(contest.category === "MALE" && session.data.user.gender === "male") || (contest.category === "FEMALE" && session.data.user.gender === "female") ? "Participate" : 
-                                        ((contest.category === "MALE" )? "Only Boys" : "Only Girls" )
-                                        }
+                                            onClick={() => handleClick((contest.category === "MALE" && session.data.user.gender === "male") || (contest.category === "FEMALE" && session.data.user.gender === "female"), contest.id)}
+                                            disabled={((contest.category === "MALE" && session.data.user.gender === "female") || (contest.category === "FEMALE" && session.data.user.gender === "male")) || isSubmitting}
+                                            className={`${(((contest.category === "MALE" && session.data.user.gender === "male") || (contest.category === "FEMALE" && session.data.user.gender === "female"))) ? "bg-black text-yellow-400" : "bg-gray-500 text-black"}
+                                            flex-1 cursor-pointer hover:bg-gray-900 font-medium py-2 px-4 rounded-lg transition-colors
+                                            ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                        >
+                                            {isSubmitting ? (
+                                                <span className="flex items-center justify-center">
+                                                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                                                    Processing...
+                                                </span>
+                                            ) : (contest.category === "MALE" && session.data.user.gender === "male") || (contest.category === "FEMALE" && session.data.user.gender === "female") ? "Participate" : 
+                                            ((contest.category === "MALE") ? "Only Boys" : "Only Girls")}
                                         </button>
                                     </div>
                                 </div>

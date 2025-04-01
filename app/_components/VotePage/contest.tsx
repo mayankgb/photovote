@@ -3,8 +3,9 @@
 import { leaderBoardState, useContestId } from "@/store/state"
 import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
-import { getAllContest, getNonParticipatedContest } from "@/app/actions/contest" 
+import { getAllContest } from "@/app/actions/contest" 
 import { $Enums } from "@prisma/client"
+import { Loader2 } from "lucide-react"
 
 interface Data {
     id: string,
@@ -14,36 +15,37 @@ interface Data {
 }
 
 export function OngoingContest() {
-
     const session = useSession()
-    const [response ,setResponse] = useState<Data[]>([])
-    const {isLeaderBoard, setisLeaderBoard} = leaderBoardState()
+    const [response, setResponse] = useState<Data[]>([])
+    const [isLoading, setIsLoading] = useState(true)
+    const { isLeaderBoard, setisLeaderBoard } = leaderBoardState()
     const { setContestId } = useContestId()
 
     useEffect(() => {
-        try{
+        try {
             if (!session.data) {
+                setIsLoading(false)
                 return
             }
+            
             const main = async () => {
-                
+                setIsLoading(true)
                 const data = await getAllContest(session.data.user.instituteId || "")
                 console.log("this is the contest data", data)
 
                 if (data) {
                     setResponse(data)
-                    return
                 }
-            
+                setIsLoading(false)
             }
 
             main()
-        }catch(e) {
+        } catch(e) {
             console.log(e)
+            setIsLoading(false)
             return
         }
-    },[session.data])
-
+    }, [session.data])
 
     function handleClick(contestIds: string) {
         setContestId(contestIds)
@@ -52,7 +54,12 @@ export function OngoingContest() {
 
     return (
         <div className="">
-            {(response && (response.length > 0)) ? (
+            {isLoading ? (
+                <div className="flex items-center justify-center py-16">
+                    <Loader2 className="w-10 h-10 text-yellow-400 animate-spin" />
+                    <span className="ml-3 text-gray-600 font-medium">Loading contests...</span>
+                </div>
+            ) : (response && (response.length > 0)) ? (
                 <div className="grid gap-6 md:grid-cols-2 mt-4 lg:grid-cols-3">
                     {response.map((contest) => (
                         <div key={contest.id} className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow">
@@ -85,6 +92,5 @@ export function OngoingContest() {
                 </div>
             )}
         </div>
-
     )
 }
