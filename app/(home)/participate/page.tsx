@@ -153,7 +153,7 @@ export default function Participate() {
                                     <div className="flex gap-2">
                                         <button
                                          onClick={() => handleClick((contest.category === "MALE" && session.data.user.gender === "male") || (contest.category === "FEMALE" && session.data.user.gender === "female") , contest.id)}
-                                         disabled={!((contest.category === "MALE" && session.data.user.gender === "male") || (contest.category === "FEMALE" && session.data.user.gender === "female"))}
+                                         disabled={!((contest.category === "MALE" && session.data.user.gender === "female") || (contest.category === "FEMALE" && session.data.user.gender === "male"))}
                                          className={`${(!((contest.category === "MALE" && session.data.user.gender === "male") || (contest.category === "FEMALE" && session.data.user.gender === "female"))) ? "bg-gray-500 text-black" : "bg-black text-yellow-400"}
                                          flex-1 cursor-pointer  hover:bg-gray-900 font-medium py-2 px-4 rounded-lg transition-colors
                                          `}>
