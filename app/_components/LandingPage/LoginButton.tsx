@@ -1,14 +1,18 @@
 "use client"
 
 import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export function Login() {
     const session = useSession()
     console.log(session)
+    const router = useRouter()
 
     function handleClick() {
-       redirect("/home")
+       const toastId = toast.loading("loading")
+       router.push("/home")
+       toast.dismiss(toastId)
     }
 
     return(
