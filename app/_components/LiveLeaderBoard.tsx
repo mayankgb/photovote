@@ -29,9 +29,11 @@ export function LiveBoard() {
     const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
+        setIsLoading(true)
         const main = async () => {
 
             if (!session || !session.data) {
+                setIsLoading(false)
                 return
             }
 
@@ -44,7 +46,9 @@ export function LiveBoard() {
                     type: "firstonline",
                     contestId: contestId
                 }))
+                setIsLoading(false)
             }
+            setIsLoading(false)
 
             socket.onmessage = (message) => {
                 const data = JSON.parse(message.data)
