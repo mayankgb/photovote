@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
 import { getAllContest } from "../actions/contest"
 import { $Enums } from "@prisma/client"
+import { Loader2 } from "lucide-react"
 
 interface Data {
     id: string,
@@ -16,38 +17,54 @@ interface Data {
 export function OngoingContest() {
 
     const session = useSession()
-    const [response ,setResponse] = useState<Data[]>([])
-    const {isLeaderBoard, setisLeaderBoard} = leaderBoardState()
+    const [response, setResponse] = useState<Data[]>([])
+    const { isLeaderBoard, setisLeaderBoard } = leaderBoardState()
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
-        try{
+        setIsLoading(true)
+        try {
             if (!session.data) {
+                setIsLoading(false)
                 return
             }
             const main = async () => {
-                
+
                 const data = await getAllContest(session.data.user.instituteId || "")
                 console.log("this is the contest data", data)
 
                 if (data) {
+                    setIsLoading(false)
                     setResponse(data)
                     return
                 }
-            
+
+                setIsLoading(false)
+                return
             }
 
             main()
-        }catch(e) {
+        } catch (e) {
+            setIsLoading(false)
             console.log(e)
             return
         }
-    },[session.data])
+    }, [session.data])
 
     const { setContestId } = useContestId()
 
     function handleClick(contestIds: string) {
         setContestId(contestIds)
         setisLeaderBoard()
+    }
+
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center py-16">
+                <Loader2 className="w-10 h-10 text-yellow-400 animate-spin" />
+                <span className="ml-3 text-gray-600 font-medium">Loading contests...</span>
+            </div>
+        )
     }
 
     return (

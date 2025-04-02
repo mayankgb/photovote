@@ -72,7 +72,7 @@ export function LiveBoard() {
                     setData((prev) => {
                         const newData = [...prev]
                         const newArr = newData.map((a) => {
-                            if (a.id === data.id) {
+                            if (a.id === data.data.id) {
                                 const newUpvote: Data = {...a , upvote: data.upvote}
                                 return newUpvote
                             }

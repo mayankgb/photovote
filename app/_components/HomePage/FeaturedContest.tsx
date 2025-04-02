@@ -46,7 +46,7 @@ export default async function FeaturedContest() {
                                             })} </p>
                             <div className="flex justify-between items-center">
                                 <span className="text-sm text-gray-500">{data._count.participant} participants</span>
-                                <Link href="/contests/photography" className="bg-yellow-400 hover:bg-yellow-500 text-black text-sm font-medium py-2 px-4 rounded-lg transition-colors">
+                                <Link href="/" className="bg-yellow-400 hover:bg-yellow-500 text-black text-sm font-medium py-2 px-4 rounded-lg transition-colors">
                                     Join Now
                                 </Link>
                             </div>
@@ -58,10 +58,6 @@ export default async function FeaturedContest() {
                         </div>
                     )
                     }
-                    
-                    {/* Contest Card 2 */}
-                    {/* Contest Card 3 */}
-                    
                 </div>
     )
 }
