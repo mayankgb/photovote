@@ -171,9 +171,6 @@ export default function Participate() {
                 ) : (
                     <div className="bg-white rounded-lg shadow-md p-8 text-center">
                         <p className="text-gray-600 mb-4">No contests available at your institute yet.</p>
-                        <button className="bg-yellow-400 hover:bg-yellow-500 text-black font-medium py-2 px-4 rounded-lg transition-colors">
-                            Browse Other Contests
-                        </button>
                     </div>
                 )}
             </div>

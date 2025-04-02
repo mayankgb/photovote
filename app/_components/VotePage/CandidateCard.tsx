@@ -1,6 +1,4 @@
 "use client"
-
-import { getParticipant } from "@/app/actions/getInfo"
 import { useContestId } from "@/store/state"
 import { useEffect, useState } from "react"
 import Image from "next/image"
@@ -38,7 +36,7 @@ export function Candidates() {
             setIsLoading(true)
             try {
 
-                const response2 = await axios.post("https://molest-backend.onrender.com/user/getallparticipant",{
+                const response2 = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/getallparticipant`,{
                     contestId
                 } , {
                     headers: {
@@ -82,7 +80,7 @@ export function Candidates() {
             }
     
     
-            const response = await axios.post("https://molest-frontend2.vercel.app/user/upvote", {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/upvote`, {
                 contestId, 
                 participantId
             } , {
@@ -93,6 +91,22 @@ export function Candidates() {
 
             const data = response.data.isVoted
             toast.dismiss(toastId)
+            if (response.data.data) {
+                setData(response.data.data)
+            }
+            setData((prev) => {
+                const clonePrev = [...prev]
+
+                const newArr = clonePrev.map((v) => {
+                    if (v.id === participantId) {
+                        const upvoted: Data= {...v , upvote : v.upvote + 1 }
+                        return upvoted
+                    }
+                    return v
+                })
+                return newArr
+
+            })
             toast.success("voted successfully")
             setIsVoted(data)
             return

@@ -182,6 +182,9 @@ export default function Profile() {
                 </svg>
                 {loading ? "uploading" : "Upload Photo"}
             </Button>
+            <div className="text-gray-500 text-sm">
+                note :- you can only able to upload photo once so choose your photo wisely
+            </div>
         </div>
     )
 }

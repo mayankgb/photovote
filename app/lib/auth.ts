@@ -46,7 +46,7 @@ export const authOptions = {
                                     name: true,
                                 }
                             })
-                            const token = jwt.sign({ id: newUser.id, instituteId: newUser.instituteId }, "addasd")
+                            const token = jwt.sign({ id: newUser.id, instituteId: newUser.instituteId }, process.env.JWT_SECRET ||"sec3rt")
                             user.jwtToken = token
                             user.role = "USER"
                             user.id = newUser.id
@@ -55,7 +55,7 @@ export const authOptions = {
                             user.name = newUser.name
                             user.gender = null
                         } else {
-                            const token = jwt.sign({ id: existingUser.id, instituteId: existingUser.instituteId }, "addasd")
+                            const token = jwt.sign({ id: existingUser.id, instituteId: existingUser.instituteId }, process.env.JWT_SECRET ||"sec3rt")
                             user.role = "USER"
                             user.instituteId = existingUser.instituteId
                             user.id = existingUser.id
@@ -100,7 +100,7 @@ export const authOptions = {
                 } else {
                     token.instituteId = session.instituteId
                     token.gender = session.gender
-                    const newToken = jwt.sign({ userId: token.id, instiuteId: session.instituteId }, "addasd")
+                    const newToken = jwt.sign({ userId: token.id, instiuteId: session.instituteId }, process.env.JWT_SECRET|| "sec3rt")
                     token.jwtToken = newToken
                     token.name = session.name
                     // console.log("this is the institueId", session)

@@ -9,9 +9,11 @@ import { toast } from "sonner"
 
 interface Data {
     upvote: number;
+    id: string
     user: {
         name: string | null;
         image: string | null;
+        id: string
         branch: {
             name: string;
         } | null;
@@ -23,7 +25,7 @@ export function LiveBoard() {
     const { contestId } = useContestId()
     const session = useSession()
     const [error, setError] = useState("")
-    const [data, setData] = useState<Data[]>()
+    const [data, setData] = useState<Data[]>([])
     const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
@@ -49,9 +51,37 @@ export function LiveBoard() {
                 if (data.type === "data") {
                     setData(data.data)
                     setError("")
-                }else if (data.type === "error")
-                toast(data.message)
-                setError(data.message)
+                }else if (data.type === "error"){
+                    toast(data.message)
+                    setError(data.message)
+                }else if (data.type === "Last") {
+                    setData((prev) => {
+                        const clonePrev = [...prev]
+                        clonePrev.pop()
+                        clonePrev.push(data.data)
+                        return clonePrev
+                    })
+                }else if (data.type === "new") {
+                    setData((prev) => {
+                        const clonePrev = [...prev]
+                        clonePrev.pop()
+                        clonePrev.splice(data.index, 0, data.data)
+                        return clonePrev
+                    })
+                }else if (data.type === "update") {
+                    setData((prev) => {
+                        const newData = [...prev]
+                        const newArr = newData.map((a) => {
+                            if (a.id === data.id) {
+                                const newUpvote: Data = {...a , upvote: data.upvote}
+                                return newUpvote
+                            }
+                            return a
+                        })
+
+                        return newArr
+                    })
+                }
             }
         }
         main()
@@ -72,7 +102,7 @@ export function LiveBoard() {
 
     return (
         <div className="bg-gray-50 rounded-lg shadow-md p-6 max-w-3xl mx-auto">
-            <h2 className="text-2xl font-bold text-center mb-2">Contest Leaderboard</h2>
+            <h2 className="text-2xl font-bold text-center mb-2">Top 10 Hottest Guy</h2>
             <p className="text-center text-gray-600 mb-6">Vote for the hottest guy from the institute</p>
 
             {isLoading ? (
@@ -88,7 +118,7 @@ export function LiveBoard() {
                     {data.map((participant, index) => (
                         <div
                             key={participant.user.name}
-                            className={`flex items-center justify-between p-4 rounded-lg transition-all ${index === 0
+                            className={`flex items-center space-y-4 md:space-y-0 flex-col sm:flex-row justify-between p-4 rounded-lg transition-all ${index === 0
                                 ? "bg-yellow-100 border-2 border-yellow-400"
                                 : "bg-white border border-gray-200 hover:border-yellow-400"
                                 }`}
@@ -124,8 +154,8 @@ export function LiveBoard() {
                                 </div>
                             </div>
 
-                            <div className="flex items-center space-x-3">
-                                <div className="bg-black text-yellow-400 text-center rounded-2xl px-4 py-2 rounded- font-semibold">
+                            <div className="flex items-center sm:w-fit w-full space-x-3">
+                                <div className="bg-black w-full text-yellow-400 text-center rounded-2xl px-4 py-2 rounded-lg font-semibold">
                                     {participant.upvote} {participant.upvote === 1 ? "vote" : "votes"}
                                 </div>
 
