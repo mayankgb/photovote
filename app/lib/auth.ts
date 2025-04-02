@@ -108,6 +108,8 @@ export const authOptions = {
             }
             console.log("this is the trigger",trigger)
 
+            console.log("this is the jwt_secret", process.env.JWT_SECRET)
+
             return token
         },
         session: async ({ session, token }: { session: Session, token: JWT }) => {
