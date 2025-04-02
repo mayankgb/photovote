@@ -73,7 +73,7 @@ export function LiveBoard() {
                         const newData = [...prev]
                         const newArr = newData.map((a) => {
                             if (a.id === data.data.id) {
-                                const newUpvote: Data = {...a , upvote: data.upvote}
+                                const newUpvote: Data = {...a , upvote: data.data.upvote}
                                 return newUpvote
                             }
                             return a
