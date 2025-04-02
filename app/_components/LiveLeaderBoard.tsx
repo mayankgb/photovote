@@ -170,10 +170,7 @@ export function LiveBoard() {
                 </div>
             ) : (
                 <div className="text-center py-10">
-                    <p className="text-gray-500 mb-2">No participants found</p>
-                    <button className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 px-4 rounded-md transition-colors">
-                        Refresh
-                    </button>
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-yellow-500"></div>
                 </div>
             )}
         </div>
