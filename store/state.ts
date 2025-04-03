@@ -28,3 +28,4 @@ export const leaderBoardState = create<{isLeaderBoard: boolean , setisLeaderBoar
   isLeaderBoard: false,
   setisLeaderBoard: () => set((prev) => ({isLeaderBoard: !prev.isLeaderBoard}))
 }))
+

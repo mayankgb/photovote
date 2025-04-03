@@ -1,9 +1,11 @@
 "use server"
 
-import {prisma} from "@/client";
+import { prisma } from "@/client";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../lib/auth";
 
-export async function getAllContest(instituteId : string) {
-    try{
+export async function getAllContest(instituteId: string) {
+    try {
         const data = await prisma.contest.findMany({
             where: {
                 instituteId: instituteId,
@@ -11,14 +13,14 @@ export async function getAllContest(instituteId : string) {
             },
             select: {
                 id: true,
-                name: true, 
-                endDate: true, 
+                name: true,
+                endDate: true,
                 category: true
             }
         })
-        console.log("this is the data",data)
+        console.log("this is the data", data)
         return data
-    }catch(e) {
+    } catch (e) {
         console.log(e)
         return
     }
@@ -34,18 +36,18 @@ export async function getNonParticipatedContest(instituteId: string, userId: str
                     none: {
                         userId: userId
                     }
-                
+
                 }
             },
             select: {
                 id: true,
-                name: true, 
-                endDate: true, 
+                name: true,
+                endDate: true,
                 category: true
             }
         })
         return data
-    }catch(e) {
+    } catch (e) {
         console.log(e)
         return
     }
@@ -59,11 +61,11 @@ export async function getAprroval(userId: string) {
             where: {
                 userId: userId
             },
-            select:{
+            select: {
                 id: true,
                 contest: {
                     select: {
-                        name: true, 
+                        name: true,
                         id: true,
                         endDate: true
                     }
@@ -71,10 +73,10 @@ export async function getAprroval(userId: string) {
                 status: true
             }
         })
-        
+
         return response
 
-    }catch(e) {
+    } catch (e) {
         console.log(e)
         return
 
@@ -83,7 +85,7 @@ export async function getAprroval(userId: string) {
 
 export async function createApproval(userId: string, contestId: string) {
 
-    try{
+    try {
 
         const existingParticipant = await prisma.participant.findFirst({
             where: {
@@ -99,16 +101,114 @@ export async function createApproval(userId: string, contestId: string) {
         const newParticipant = await prisma.participant.create({
             data: {
                 userId: userId,
-                contestId: contestId, 
+                contestId: contestId,
                 status: "PENDING"
             }
         })
 
         return newParticipant.id
 
-    }catch(e) {
+    } catch (e) {
         console.log(e)
         return
     }
 
+}
+
+
+export async function getCompeletedContest() {
+    try {
+
+        const session = await getServerSession(authOptions)
+
+        if (!session || !session.user.instituteId) {
+            return
+        }
+
+        const data = await prisma.contest.findMany({
+            where: {
+                instituteId: session.user.instituteId,
+                status: "ENDED"
+            },
+            select: {
+                id: true,
+                name: true,
+                status: true,
+                category: true
+            }
+        })
+
+        if (data) {
+            return data
+        }
+
+        return
+
+    } catch (e) {
+        console.log(e)
+        return
+    }
+}
+
+
+export async function getWinners(contestId: string) {
+    try {
+
+        const data = await prisma.winner.findFirst({
+            where: {
+                contestId: contestId,
+                contest: {
+                    status: "ENDED"
+                }
+            },
+            select: {
+                participant: {
+                    select: {
+                        upvote: true
+                    }
+                },
+                user: {
+                    select: {
+                        name: true,
+                        image: true
+                    }
+                },
+                contest: {
+                    select: {
+                        name: true
+                    }
+                }
+            }
+        })
+
+        const participantCount = await prisma.contest.findFirst({
+            where: {
+                id: contestId
+            },
+            select: {
+                _count: { select: { participant: true } }
+            }
+        })
+
+        if (data && participantCount?._count) {
+            return {
+                message: "we got the winners",
+                data,
+                count: participantCount._count,
+                status: 200
+            }
+        }
+
+        return {
+            message: "No winners with this Contest found or Contest does not exists",
+            status: 400
+        }
+
+    } catch (e) {
+        console.log(e)
+        return {
+            message: "something went wrong",
+            status: 500
+        }
+    }
 }

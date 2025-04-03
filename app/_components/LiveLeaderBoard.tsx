@@ -83,7 +83,9 @@ export function LiveBoard() {
                             return a
                         })
 
-                        return newArr
+                       const a = newArr.sort((a, b) => b.upvote - a.upvote)
+
+                       return a
                     })
                 }
             }

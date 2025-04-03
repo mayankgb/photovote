@@ -4,11 +4,13 @@ import { usePathname } from "next/navigation"
 import { Home, User, Trophy, Camera, BarChart3, Menu, X, Vote, CheckCircle } from "lucide-react"
 import Link from "next/link"
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 
 export function Sidebar() {
     const pathname = usePathname()
     const [isCollapsed, setIsCollapsed] = useState(false)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+    const router = useRouter()
 
     const navItems = [
         { name: "Home", path: "/home", icon: <Home size={20} /> },
@@ -105,10 +107,10 @@ export function Sidebar() {
                 {/* Footer Section */}
                 <div className="p-4 border-t border-gray-200">
                     {(!isCollapsed || isMobileMenuOpen) ? (
-                        <button className="w-full flex items-center justify-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-black font-medium py-3 px-4 rounded-lg transition-colors">
+                        <Link href={"/winners"} onClick={() => setIsMobileMenuOpen(false)} className="w-full flex items-center justify-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-black font-medium py-3 px-4 rounded-lg transition-colors">
                             <Trophy size={18} />
                             <span>View Winners</span>
-                        </button>
+                        </Link>
                     ) : (
                         <button className="w-full flex items-center justify-center bg-yellow-400 hover:bg-yellow-500 text-black font-medium p-3 rounded-lg transition-colors">
                             <Trophy size={18} />
