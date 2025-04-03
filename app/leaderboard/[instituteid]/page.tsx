@@ -87,7 +87,7 @@ export default function Institute({ params }: { params: Promise<{ instituteid: s
                         </div>
                         <div className="mt-4 flex justify-end">
                             <button 
-                                className="bg-yellow-300 font-bold px-4 py-2 rounded-md hover:bg-blue-600 transition-colors"
+                                className="bg-yellow-300 font-bold px-4 py-2 rounded-md hover:bg-yellow-500 transition-colors"
                                 onClick={() => {
                                     // Add navigation or action for the contest
                                     setSelectedId(contest.id)

@@ -12,7 +12,7 @@ export async function Navbar() {
         <div className="font-bold text-xl">
           PhotoVote
         </div>
-        <div className="flex justify-between w-60 items-center h-fit">
+        <div className="flex justify-between  md:w-60 w-fit space-x-2 md:space-x-0 items-center h-fit">
           <Link href={"/leaderboard"} className="cursor-pointer font-semibold bg-yellow-300 px-4 py-2 rounded-full">
             Leaderboard
           </Link>

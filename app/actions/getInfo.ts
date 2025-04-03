@@ -88,7 +88,7 @@ export async function getContest(institueId: string) {
         const allContest = await prisma.contest.findMany({
             where: {
                 instituteId: institueId,
-                status: "CREATED"
+                status: "STARTED"
             },
             select: {
                 id: true,

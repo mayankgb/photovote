@@ -15,7 +15,7 @@ export function Hero() {
             </div>
             <CardImage />
             <div className="flex justify-center items-center w-full h-20  md:mt-10">
-                <div className="flex justify-between w-80 items-center">
+                <div className="flex justify-between w-fit space-x-3 items-center">
                     <Link href={"/vote"} className="bg-yellow-300 w-32 rounded-full px-2 py-2 text-center font-bold cursor-pointer">
                         Vote
                     </Link>

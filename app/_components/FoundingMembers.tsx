@@ -2,6 +2,7 @@ import { Instrument_Serif } from "next/font/google"
 import mradul from "@/public/mradul.jpg"
 import mayank from "@/public/mayank.jpg"
 import Image from "next/image"
+import Link from "next/link"
 
 
 const instrument = Instrument_Serif({
@@ -15,7 +16,7 @@ export function FoundingMembers() {
             <div className={`${instrument.className} text-5xl mt-10`}>
                 Founding Members
             </div>
-            <div className="flex flex-col md:flex-row justify-between items-center w-[60%] h-56 md:h-44">
+            <div  className="flex flex-col md:flex-row justify-between items-center w-[60%] h-56 md:h-44">
                 <div className="flex w-60  h-28 justify-between items-center">
                     <Image src={mayank} alt="icon" className="w-24 object-cover h-24 rounded-full bg-yellow-400">
 
@@ -24,9 +25,9 @@ export function FoundingMembers() {
                         <div className="font-bold">
                         Mayank Agrawal
                         </div>
-                        <div>
+                        <Link className="underline select-none" href={"https://www.linkedin.com/in/mayank-agrawal-b3a312299/"} >
                             Linkedin
-                        </div>
+                        </Link>
                         
                     </div>
 
@@ -39,9 +40,9 @@ export function FoundingMembers() {
                         <div className="font-bold">
                         Mradul Bisen
                         </div>
-                        <div>
+                        <Link className="underline select-none" href={"https://www.linkedin.com/in/mradul-bisen-008147289/"} >
                             Linkedin
-                        </div>
+                        </Link>
                         
                     </div>
 
