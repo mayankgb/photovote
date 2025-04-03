@@ -10,7 +10,7 @@ export default async function ViewAchievements() {
         return
     }
 
-    const response = await prisma.winner.findMany({
+    const response = await prisma.position.findMany({
         where: {
             userId: session.user.id
         },

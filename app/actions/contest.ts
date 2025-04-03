@@ -154,12 +154,13 @@ export async function getCompeletedContest() {
 export async function getWinners(contestId: string) {
     try {
 
-        const data = await prisma.winner.findFirst({
+        const data = await prisma.position.findFirst({
             where: {
                 contestId: contestId,
                 contest: {
                     status: "ENDED"
-                }
+                },
+                rank: 1
             },
             select: {
                 participant: {
@@ -202,6 +203,66 @@ export async function getWinners(contestId: string) {
         return {
             message: "No winners with this Contest found or Contest does not exists",
             status: 400
+        }
+
+    } catch (e) {
+        console.log(e)
+        return {
+            message: "something went wrong",
+            status: 500
+        }
+    }
+}
+
+export async function getUserparticipation() {
+    try {
+
+        const session = await getServerSession(authOptions)
+
+        if (!session || !session.user.instituteId) {
+            return {
+                message: "you are not logged in",
+                status: 403
+            }
+
+        }
+
+        const data = await prisma.contest.findMany({
+            where: {
+                instituteId: session.user.instituteId,
+                participant: {
+                    some: { userId: session.user.id, status: "APPROVE"},
+                },
+                status: { in : ["ENDED" , "STARTED"]}
+            },
+            orderBy: {
+                endDate: "desc"
+            },
+            select: {
+                id: true,
+                status: true,
+                name: true,
+                endDate: true, 
+                position: {
+                    select: {
+                        rank: true
+                    }
+                }
+                
+            }
+        })
+
+        if (data) {
+            return {
+                message: "data found",
+                data: data,
+                status: 200
+            }
+        }
+
+        return {
+            message: "You didn't participate in any contest",
+            status: 200
         }
 
     } catch (e) {

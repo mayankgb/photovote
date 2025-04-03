@@ -1,7 +1,7 @@
 "use client"
 
 import { usePathname } from "next/navigation"
-import { Home, User, Trophy, Camera, BarChart3, Menu, X, Vote, CheckCircle } from "lucide-react"
+import { Home, User, Trophy, Camera, BarChart3, Menu, X, Vote, CheckCircle , BadgeCheck } from "lucide-react"
 import Link from "next/link"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
@@ -18,7 +18,8 @@ export function Sidebar() {
         { name: "Live Leaderboard", path: "/liveleaderboard", icon: <BarChart3 size={20} /> },
         { name: "Participate", path: "/participate", icon: <Camera size={20} /> },
         { name: "Vote Now", path: "/vote", icon: <Vote size={20} /> },
-        { name: "Your Approval", path: "/approvals", icon: <CheckCircle size={20} /> }
+        { name: "Your Approval", path: "/approvals", icon: <CheckCircle size={20} /> },
+        { name: "Achivements", path: "/achievements" ,icon: <BadgeCheck size={20}/> }
     ]
 
     // Check screen size and set collapsed state
