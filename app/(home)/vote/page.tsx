@@ -1,8 +1,10 @@
 "use client"
 
-import { Candidates } from "@/app/_components/VotePage/CandidateCard";
-import { OngoingContest } from "@/app/_components/VotePage/contest";
 import { leaderBoardState } from "@/store/state";
+import dynamic from "next/dynamic";
+
+const OngoingContest = dynamic(() => import("@/app/_components/VotePage/contest"))
+const Candidates = dynamic(() => import("@/app/_components/VotePage/CandidateCard"))
 
 export default function Vote() {
 

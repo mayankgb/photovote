@@ -1,9 +1,11 @@
 "use client"
 
-import { LiveBoard } from "@/app/_components/LiveLeaderBoard"
-import { OngoingContest } from "@/app/_components/OngoingContest"
 import { leaderBoardState } from "@/store/state"
+import dynamic from "next/dynamic"
 import { Instrument_Serif } from "next/font/google"
+
+const LiveBoard = dynamic(() => import("@/app/_components/LiveLeaderBoard"))
+const OngoingContest = dynamic(() => import("@/app/_components/OngoingContest"))
 
 
 const instrument = Instrument_Serif({

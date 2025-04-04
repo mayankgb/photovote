@@ -20,7 +20,7 @@ interface Data {
     };
 }
 
-export function LiveBoard() {
+export default function LiveBoard() {
 
     const { contestId } = useContestId()
     const session = useSession()

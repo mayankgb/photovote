@@ -1,3 +1,5 @@
+"use server"
+
 import {prisma} from "@/client";
 import Link from "next/link"
 

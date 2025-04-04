@@ -10,7 +10,7 @@ const instrument = Instrument_Serif({
     weight: ['400']
 })
 
-export function FoundingMembers() {
+export default function FoundingMembers() {
     return (
         <div className={`flex h-70 w-full flex-col items-center `}>
             <div className={`${instrument.className} text-5xl mt-10`}>

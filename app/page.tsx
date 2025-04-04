@@ -1,6 +1,7 @@
-import { FoundingMembers } from "./_components/FoundingMembers";
-import { Hero } from "./_components/HeroSection";
-import { Navbar } from "./_components/Navbar";
+import dynamic from "next/dynamic";
+const Navbar  = dynamic(() => import ("./_components/Navbar"))
+const Hero  = dynamic(() => import ("./_components/HeroSection"))
+const FoundingMembers  = dynamic(() => import ("./_components/FoundingMembers"))
 
 export default function Home() {
 

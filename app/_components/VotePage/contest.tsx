@@ -14,11 +14,11 @@ interface Data {
     endDate: Date
 }
 
-export function OngoingContest() {
+export default function OngoingContest() {
     const session = useSession()
     const [response, setResponse] = useState<Data[]>([])
     const [isLoading, setIsLoading] = useState(true)
-    const { isLeaderBoard, setisLeaderBoard } = leaderBoardState()
+    const { setisLeaderBoard } = leaderBoardState()
     const { setContestId } = useContestId()
 
     useEffect(() => {

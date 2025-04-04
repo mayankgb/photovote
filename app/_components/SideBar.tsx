@@ -4,13 +4,11 @@ import { usePathname } from "next/navigation"
 import { Home, User, Trophy, Camera, BarChart3, Menu, X, Vote, CheckCircle , BadgeCheck } from "lucide-react"
 import Link from "next/link"
 import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
 
 export function Sidebar() {
     const pathname = usePathname()
     const [isCollapsed, setIsCollapsed] = useState(false)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-    const router = useRouter()
 
     const navItems = [
         { name: "Home", path: "/home", icon: <Home size={20} /> },

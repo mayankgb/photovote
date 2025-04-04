@@ -7,7 +7,7 @@ const instrument = Instrument_Serif({
     weight: ['400']
 })
 
-export function Hero() {
+export default function Hero() {
     return (
         <div className="h-full grow flex flex-col items-center pt-20">
             <div className={`${instrument.className} text-6xl text-center`}>

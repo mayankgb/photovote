@@ -2,10 +2,12 @@ import { Instrument_Serif } from "next/font/google"
 import { authOptions } from "@/app/lib/auth"
 import { getServerSession } from "next-auth"
 import Link from "next/link"
-import ActiveContest from "@/app/_components/HomePage/ActiveContest"
-import YourEntries from "@/app/_components/HomePage/YourEntries"
-import ViewAchievements from "@/app/_components/HomePage/ViewAchievements"
-import FeaturedContest from "@/app/_components/HomePage/FeaturedContest"
+import dynamic from "next/dynamic"
+
+const ActiveContest =  dynamic(() => import( "@/app/_components/HomePage/ActiveContest"))
+const YourEntries =  dynamic(() => import( "@/app/_components/HomePage/YourEntries"))
+const ViewAchievements =  dynamic(() => import( "@/app/_components/HomePage/ViewAchievements"))
+const FeaturedContest =  dynamic(() => import( "@/app/_components/HomePage/FeaturedContest"))
 
 const instrument = Instrument_Serif({
     subsets: ['latin'],

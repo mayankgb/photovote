@@ -18,7 +18,7 @@ interface Data {
     };
 }
 
-export function Candidates() {
+export default function Candidates() {
     const { contestId } = useContestId()
     const session = useSession()
     const [error, setError] = useState("")

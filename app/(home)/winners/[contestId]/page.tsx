@@ -7,7 +7,7 @@ export default async function ({params} : {params: Promise<{contestId: string}>}
     if (!contestId) {
         return (
             <div>
-
+                Invalid id 
             </div>
         )
     }

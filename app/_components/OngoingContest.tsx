@@ -14,7 +14,7 @@ interface Data {
     endDate: Date
 }
 
-export function OngoingContest() {
+export default function OngoingContest() {
 
     const session = useSession()
     const [response, setResponse] = useState<Data[]>([])

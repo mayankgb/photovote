@@ -1,11 +1,9 @@
-import { getServerSession } from "next-auth"
-import { authOptions } from "../lib/auth"
+"use server"
+
 import Link from "next/link"
 import { Login } from "./LandingPage/LoginButton"
 
-export async function Navbar() {
-
-    const session = await getServerSession(authOptions)
+export default async function Navbar() {
 
     return (
         <div className=" h-16 flex items-center justify-between pt-3 pb-3 px-1 md:px-10">
