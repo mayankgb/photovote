@@ -102,7 +102,7 @@ export const authOptions = {
                 } else {
                     token.instituteId = session.instituteId
                     token.gender = session.gender
-                    const newToken = jwt.sign({ userId: token.id, instituteId: session.instituteId }, process.env.JWT_SECRET!)
+                    const newToken = jwt.sign({ id: token.id, instituteId: session.instituteId }, process.env.JWT_SECRET!)
 
                     token.jwtToken = newToken
                     token.name = session.name
