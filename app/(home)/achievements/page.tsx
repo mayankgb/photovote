@@ -29,11 +29,11 @@ export default function Achievements() {
           return;
         }
         const newData: UserParticipation[] = response.data.map((d) => ({
-          contestId: d.id,
-          contestName: d.name,
-          status: d.status,
-          endData: new Date(d.endDate).toISOString().split("T")[0],
-          userRank: d.position?.rank
+          contestId: d.contest.id,
+          contestName: d.contest.name,
+          status: d.contest.status,
+          endData: new Date(d.contest.endDate).toISOString().split("T")[0],
+          userRank: d.rank
         }));
         
         // Using dummy data for testing

@@ -227,31 +227,29 @@ export async function getUserparticipation() {
 
         }
 
-        const data = await prisma.contest.findMany({
+        const data = await prisma.position.findMany({
             where: {
-                instituteId: session.user.instituteId,
-                participant: {
-                    some: { userId: session.user.id, status: "APPROVE"},
-                },
-                status: { in : ["ENDED" , "STARTED"]}
+                userId: session.user.id,
             },
             orderBy: {
-                endDate: "desc"
+                contest: {
+                    endDate: "desc"
+                }
             },
             select: {
-                id: true,
-                status: true,
-                name: true,
-                endDate: true, 
-                position: {
+                rank: true,
+                contest: {
                     select: {
-                        rank: true
+                        id: true,
+                        status: true,
+                        name: true,
+                        endDate: true,
+
                     }
                 }
-                
+
             }
         })
-
         if (data) {
             return {
                 message: "data found",
