@@ -53,12 +53,12 @@ export default function Winners() {
             case "STARTED":
                 return <div className="bg-green-100 text-green-700 rounded-full px-3 py-1 text-sm font-medium flex items-center">
                     <Award size={16} className="mr-1" />
-                    Completed
+                    Ongoing
                 </div>
             case "ENDED":
                 return <div className="bg-yellow-100 text-yellow-700 rounded-full px-3 py-1 text-sm font-medium flex items-center">
                     <Medal size={16} className="mr-1" />
-                    Ongoing
+                    Ended
                 </div>
             default:
                 return <div className="bg-gray-100 text-gray-700 rounded-full px-3 py-1 text-sm font-medium">
