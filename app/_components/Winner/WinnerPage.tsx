@@ -143,13 +143,13 @@ export function Winner({contestId}: {contestId: string}) {
                 <div className="text-center p-2">
                     <p className="text-gray-500 text-xs">Total Contestants</p>
                     <p className="text-lg font-semibold text-gray-800 flex items-center justify-center">
-                        <Users size={14} className="text-indigo-500 mr-1" /> 128
+                        <Users size={14} className="text-indigo-500 mr-1" /> {data.totalParticipant}
                     </p>
                 </div>
                 <div className="text-center p-2">
                     <p className="text-gray-500 text-xs">Total Votes</p>
                     <p className="text-lg font-semibold text-gray-800 flex items-center justify-center">
-                        <Star size={14} className="text-amber-400 mr-1" /> 2,547
+                        <Star size={14} className="text-amber-400 mr-1" /> {data.upvote}
                     </p>
                 </div>
                 
@@ -159,7 +159,7 @@ export function Winner({contestId}: {contestId: string}) {
             <div className="bg-slate-50 p-4 flex flex-col sm:flex-row justify-between items-center gap-3">
                 <div className="flex items-center text-sm text-slate-600">
                     <Calendar size={16} className="text-indigo-500 mr-2" />
-                    <span>Next contest starting in 3 days</span>
+                    <span>Next contest starting soon</span>
                 </div>
                 
                 <button onClick={() => router.push("/vote")} className="text-indigo-600 hover:text-indigo-800 text-sm font-medium flex items-center">
