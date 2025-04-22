@@ -15,7 +15,8 @@ export default async function FeaturedContest() {
 
     const response = await prisma.contest.findMany({
         where:{
-            instituteId: session.user.instituteId
+            instituteId: session.user.instituteId,
+            status: "CREATED"
         },
         take: 3,
         select: {
