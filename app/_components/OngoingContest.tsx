@@ -49,7 +49,7 @@ export default function OngoingContest() {
             console.log(e)
             return
         }
-    }, [session.data])
+    }, [])
 
     const { setContestId } = useContestId()
 

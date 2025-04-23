@@ -60,7 +60,7 @@ export default function Candidates() {
         if (contestId) {
             fetchParticipants()
         }
-    }, [contestId, session.data])
+    }, [contestId])
     
     const handleVote = async (participantId: string) => {
 

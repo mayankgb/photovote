@@ -46,7 +46,7 @@ export default function Participate() {
             setIsLoading(false)
             return
         }
-    }, [session])
+    }, [])
 
     if (!session) {
         return (

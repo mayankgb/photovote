@@ -60,7 +60,7 @@ export default function Approval() {
         if (session.status !== "loading") {
             fetchApprovals()
         }
-    }, [session.data, session.status])
+    }, [])
 
     const getStatusBadge = (status: $Enums.ApprovalStatus) => {
         switch (status) {

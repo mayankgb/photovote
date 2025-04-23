@@ -45,7 +45,7 @@ export default function OngoingContest() {
             setIsLoading(false)
             return
         }
-    }, [session.data])
+    }, [])
 
     function handleClick(contestIds: string) {
         setContestId(contestIds)

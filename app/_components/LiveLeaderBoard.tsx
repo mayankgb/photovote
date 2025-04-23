@@ -91,7 +91,7 @@ export default function LiveBoard() {
             }
         }
         main()
-    }, [contestId, session])
+    }, [contestId])
 
    
     // Function to render trophy or medal based on rank
